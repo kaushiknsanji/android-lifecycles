@@ -62,7 +62,7 @@ public class Fragment_step5 extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     Log.d("Step5", "Progress changed!");
-                    mSeekBarViewModel.seekbarValue.setValue(progress);
+                    mSeekBarViewModel.getSeekbarValue().setValue(progress);
                 }
             }
 
@@ -74,7 +74,7 @@ public class Fragment_step5 extends Fragment {
         });
 
         // Update the SeekBar when the ViewModel is changed.
-        mSeekBarViewModel.seekbarValue.observe(getActivity(), new Observer<Integer>() {
+        mSeekBarViewModel.getSeekbarValue().observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer value) {
                 if (value != null) {

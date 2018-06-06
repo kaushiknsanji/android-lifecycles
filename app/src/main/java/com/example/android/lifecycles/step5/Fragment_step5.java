@@ -17,8 +17,12 @@
 package com.example.android.lifecycles.step5;
 
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +46,8 @@ public class Fragment_step5 extends Fragment {
         View root = inflater.inflate(R.layout.fragment_step5, container, false);
         mSeekBar = root.findViewById(R.id.seekBar);
 
-        // TODO: get ViewModel
+        // COMPLETED: get ViewModel
+        mSeekBarViewModel = ViewModelProviders.of(getActivity()).get(SeekBarViewModel.class);
         subscribeSeekBar();
 
         return root;
@@ -55,7 +60,11 @@ public class Fragment_step5 extends Fragment {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // TODO: Set the ViewModel's value when the change comes from the user.
+                // COMPLETED: Set the ViewModel's value when the change comes from the user.
+                if (fromUser) {
+                    Log.d("Step5", "Progress changed!");
+                    mSeekBarViewModel.getSeekbarValue().setValue(progress);
+                }
             }
 
             @Override
@@ -65,7 +74,14 @@ public class Fragment_step5 extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
 
-        // TODO: Update the SeekBar when the ViewModel is changed.
-        // mSeekBarViewModel.seekbarValue.observe(...
+        // COMPLETED: Update the SeekBar when the ViewModel is changed.
+        mSeekBarViewModel.getSeekbarValue().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer progress) {
+                if (progress != null) {
+                    mSeekBar.setProgress(progress);
+                }
+            }
+        });
     }
 }
